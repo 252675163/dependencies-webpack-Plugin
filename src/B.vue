@@ -2,14 +2,14 @@
   <div>a</div>
 </template>
 <script>
-import A1 from "./A1";
-import A2 from "./A2";
+import B1 from "./B1";
+import B2 from "./B2";
 export default {
-  name: "as",
+  name: "BBBB",
   methods: {
     CC: () => {
-      console.log(A1);
-      console.log(A2);
+      console.log(B1);
+      console.log(B2);
       const VV = 1;
     }
   }

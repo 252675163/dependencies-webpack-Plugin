@@ -1,7 +1,7 @@
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const APlugin = require('plugin/a')
+const APlugin = require('./APlugin')
 module.exports = {
     module: {
         rules: [
@@ -45,8 +45,10 @@ module.exports = {
         filename: '[name].js'
     },
 
-    plugins: [new VueLoaderPlugin(), new HtmlWebpackPlugin({
+    plugins: [new VueLoaderPlugin(),
+    new HtmlWebpackPlugin({
         filename: 'index.html',
         template: 'src/assets/index.html'
-    }), new APlugin()]
+    }),
+    new APlugin()]
 }
