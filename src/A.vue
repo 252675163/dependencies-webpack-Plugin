@@ -1,3 +1,4 @@
+/**xx模块 */
 <template>
   <div>a</div>
 </template>
