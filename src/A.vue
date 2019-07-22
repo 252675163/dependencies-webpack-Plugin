@@ -5,6 +5,7 @@
 <script>
 import A1 from "./A1";
 import A2 from "./A2";
+import C from "./C.vue";
 export default {
   name: "as",
   methods: {
