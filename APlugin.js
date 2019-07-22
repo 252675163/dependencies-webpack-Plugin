@@ -1,7 +1,7 @@
 const pluginName = 'APlugin';
 var path = require('path')
 //改动的文件
-let diffFiles = ['/src/D.vue']
+let diffFiles = ['/src/D.vue','/src/A1.js']
 let absDiffFiles = diffFiles.map(file => path.join(__dirname, file))
 console.log(__dirname)
 /**
@@ -42,10 +42,13 @@ class APlugin {
                 compilation.hooks.finishModules.tap(pluginName, modules => {
                     //直接改动的module
                     let diffModules = modules.filter(singleModule => absDiffFiles.some(s => s === singleModule.resource))
-                    diffModules = compareAbsPath(diffModules[0],[]) 
-                    diffModules.map(value=>{
-                        console.log(value);                        
-                    })               
+                    for(let i=0;i<diffModules.length;i++){
+                        let deptree = compareAbsPath(diffModules[i].reasons[0].module,[])
+                        console.log('依赖'+diffModules[i].resource+'的文件有');                         
+                        deptree.map(value=>{
+                            console.log(value);                        
+                        })
+                    }                 
                 });
             }
 
