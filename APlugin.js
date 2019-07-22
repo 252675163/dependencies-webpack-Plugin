@@ -1,7 +1,7 @@
 const pluginName = 'APlugin';
 var path = require('path')
 //改动的文件
-let diffFiles = ['/src/A1.js']
+let diffFiles = ['/src/D.vue']
 let absDiffFiles = diffFiles.map(file => path.join(__dirname, file))
 console.log(__dirname)
 /**
@@ -9,29 +9,22 @@ console.log(__dirname)
  * @param {*} absDiffFiles 
  * @param {*} modules 
  */
-function compareAbsPath(absDiffFiles, modules) {
-    //获取被直接影响的模块
-    let diffModules = modules.filter(singleModule => absDiffFiles.some(s => s === singleModule.resource))
-    return diffModules
-    // function B(mo, abspaths,arr) {
-    //     let tmpArr = []
-    //     if (mo.dependencies && mo.dependencies.length) {
-    //         mo.dependencies.foreach((subModule) => {
-    //             let res = B(subModule, abspaths)
-    //             if (res && res.length > 0) {
-    //                 arr = arr.concat(res)
-    //                 tmpArr.push(arr)
-    //             }
-    //         })
-    //         if (tmpArr.length === 0) {
-    //             return []
-    //         }
-    //     }
-    //     return tmpArr
-    // }
-    // B(diffModules, absDiffFiles, [])
-
+function compareAbsPath(diffModules,deptree) {  
+/**
+ * 递归写法
+ * 
+ */
+    if(diffModules.resource.indexOf('?')===-1){
+        deptree.push(diffModules.resource)
+    }   
+    if(diffModules.reasons[0].module==null){
+        return deptree;
+    }else{
+        return compareAbsPath(diffModules.reasons[0].module,deptree)
+    }          
 }
+
+
 class APlugin {
     apply(compiler) {
         //临时的实现
@@ -48,8 +41,11 @@ class APlugin {
             if (!(compilation.name && compilation.name.includes('html-webpack-plugin'))) {
                 compilation.hooks.finishModules.tap(pluginName, modules => {
                     //直接改动的module
-                    let diffModules = []
-                    diffModules = compareAbsPath(absDiffFiles, modules)
+                    let diffModules = modules.filter(singleModule => absDiffFiles.some(s => s === singleModule.resource))
+                    diffModules = compareAbsPath(diffModules[0],[]) 
+                    diffModules.map(value=>{
+                        console.log(value);                        
+                    })               
                 });
             }
 
